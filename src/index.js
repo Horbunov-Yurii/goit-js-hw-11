@@ -26,17 +26,146 @@ const refs = {
 
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.list.addEventListener('click', onPictureClick);
+// refs.list.addEventListener('click', onPictureClick);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 refs.goTopBtn.addEventListener('click', backToTop);
-window.addEventListener('scroll', trackScroll);
+// window.addEventListener('scroll', trackScroll);
+
+let currentPage = 1; // 2
+let currentQuery = "";// cat
+const perPage = 40;
+
+  const BASE_URL = 'https://pixabay.com/api/?';
+ 
+
+async function onFormSubmit(evt){
+  evt.preventDefault()
+  currentQuery = evt.currentTarget.elements.query.value;
+
+  refs.list.innerHTML = '';
+
+  currentPage = 1;
+
+  refs.loadMoreBtn.classList.remove('is-hidden');
+  const data = await fetchImages()
+
+  
+
+    if(!data.totalHits){
+        refs.loadMoreBtn.classList.add('is-hidden');
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      return;
+    }
+    
+     setStateLoadButton(data);
+
+    renderCard(data)
+
+    Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+  }
 
 
 
+async function fetchImages(){
+
+   const queryParam = new URLSearchParams({
+     key: '38625269-e94cc3b88596f307f4c7cd69d',
+     image_type: 'photo',
+     q: currentQuery, //cat
+     orientation: 'horizontal',
+     safesearch: true,
+     page: currentPage,
+     per_page: perPage,
+   });
+
+  const url = BASE_URL + queryParam;
+
+ const res = await axios.get(url)
+ 
+return res.data;
+}
 
 
+function renderCard({ hits }) {
+
+  const markup = hits
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => `<div class="photo-card">
+    <a href="${largeImageURL}">
+     <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+     </a>
+  <div class="info">
+    <p class="info-item">
+      <b>Likes</b><span>${likes}</span>
+    </p>
+    <p class="info-item">
+      <b>Views</b><span>${views}</span>
+    </p>
+    <p class="info-item">
+      <b>Comments</b><span>${comments}</span>
+    </p>
+    <p class="info-item">
+      <b>Downloads</b><span>${downloads}</span>
+    </p>
+  </div>
+</div>`
+    )
+    .join('');
+
+  refs.list.insertAdjacentHTML('beforeend', markup)
+  lightbox.refresh()
+}
 
 
+async function onLoadMoreBtnClick(){
+ currentPage +=1;
+
+   const data = await fetchImages()
+    renderCard(data);
+
+    // const { height: cardHeight } = document
+    //   .querySelector('.gallery')
+    //   .firstElementChild.getBoundingClientRect();
+
+    // window.scrollBy({
+    //   top: cardHeight * 2,
+    //   behavior: 'smooth',
+    // });
+
+    setStateLoadButton(data);
+}
+
+function setStateLoadButton(data){
+     const totalPages = Math.ceil(data.totalHits / perPage);
+
+
+     if (currentPage >= totalPages) {
+       refs.loadMoreBtn.classList.add('is-hidden');
+       Notiflix.Notify.info(
+         "We're sorry, but you've reached the end of search results."
+       );
+     }
+}
+
+
+function backToTop(){
+  window.scrollTo(0,0)
+}
+
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  /* options */
+});
 
 
 
