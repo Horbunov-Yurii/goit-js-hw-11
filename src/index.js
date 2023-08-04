@@ -40,10 +40,10 @@ async function onFormSubmit(evt){
   refs.list.innerHTML = '';
 
   currentPage = 1;
-  console.log(currentQuery.trim());
+
 
   if(currentQuery.trim() === ''){
-  Notiflix.Notify.failure('Qui timide rogat docet negare');
+  Notiflix.Notify.failure('Еnter the request in the picture');
   return;
   }
 
