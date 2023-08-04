@@ -43,6 +43,9 @@ async function onFormSubmit(evt){
 
 
   if(currentQuery.trim() === ''){
+
+    refs.loadMoreBtn.classList.add('is-hidden');
+
   Notiflix.Notify.failure('Еnter the request in the picture');
   return;
   }
