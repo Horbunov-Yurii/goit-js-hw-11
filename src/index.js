@@ -101,18 +101,30 @@ function renderCard({ hits }) {
      <img src="${webformatURL}" alt="${tags}" loading="lazy" class="card-img"/>
      </a>
   <div class="info">
+  <div class="info-desc">
     <p class="info-item">
-      <b>Likes</b><span>${likes}</span>
+      <b>Likes</b>
+      <p>${likes}</p>
     </p>
+  </div> 
+  <div class="info-desc"> 
     <p class="info-item">
-      <b>Views</b><span>${views}</span>
+      <b>Views</b>
+      <p>${views}</p>
     </p>
+  </div> 
+  <div class="info-desc"> 
     <p class="info-item">
-      <b>Comments</b><span>${comments}</span>
+      <b>Comments</b>
+      <p>${comments}</p>
     </p>
+  </div>  
+  <div class="info-desc">
     <p class="info-item">
-      <b>Downloads</b><span>${downloads}</span>
+      <b>Downloads</b>
+      <p>${downloads}</p>
     </p>
+  </div>  
   </div>
 </div>
 </div>`
