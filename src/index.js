@@ -40,8 +40,16 @@ async function onFormSubmit(evt){
   refs.list.innerHTML = '';
 
   currentPage = 1;
+  console.log(currentQuery.trim());
+
+  if(currentQuery.trim() === ''){
+  Notiflix.Notify.failure('Qui timide rogat docet negare');
+  return;
+  }
 
   refs.loadMoreBtn.classList.remove('is-hidden');
+
+
   const data = await fetchImages()
 
   
@@ -68,7 +76,7 @@ async function fetchImages(){
    const queryParam = new URLSearchParams({
      key: '38625269-e94cc3b88596f307f4c7cd69d',
      image_type: 'photo',
-     q: currentQuery, //cat
+     q: currentQuery, 
      orientation: 'horizontal',
      safesearch: true,
      page: currentPage,
