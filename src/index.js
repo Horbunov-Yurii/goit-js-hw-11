@@ -9,16 +9,12 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const refs = {
     // ссылка на форму
   form: document.querySelector('.search-form'), 
-
 //   button внутри формы
   formBtn: document.querySelector('.js-form-btn'),
-
 //   div в который нужно рендарить карточки
   list: document.querySelector('.gallery'),
-
 //   button для пагинации
   loadMoreBtn: document.querySelector('.load-more'),
-
 //   кнопка для поднятия вверх страницы
   goTopBtn: document.querySelector('.back_to_top'),
 };
@@ -26,10 +22,9 @@ const refs = {
 
 
 refs.form.addEventListener('submit', onFormSubmit);
-// refs.list.addEventListener('click', onPictureClick);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 refs.goTopBtn.addEventListener('click', backToTop);
-// window.addEventListener('scroll', trackScroll);
+
 
 let currentPage = 1; // 2
 let currentQuery = "";// cat
@@ -100,9 +95,10 @@ function renderCard({ hits }) {
         views,
         comments,
         downloads,
-      }) => `<div class="photo-card">
+      }) => `<div class="item">
+      <div class="photo-card">
     <a href="${largeImageURL}">
-     <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+     <img src="${webformatURL}" alt="${tags}" loading="lazy" class="card-img"/>
      </a>
   <div class="info">
     <p class="info-item">
@@ -118,6 +114,7 @@ function renderCard({ hits }) {
       <b>Downloads</b><span>${downloads}</span>
     </p>
   </div>
+</div>
 </div>`
     )
     .join('');
